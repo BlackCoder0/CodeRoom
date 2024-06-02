@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plants vs. Zombies WIKI</title>
+    <script src="./js/jquery.js"></script>
+    <script src="./js/animechara.js"></script>
+    <script src="./js/musicController.js"></script>
+    <script src="./js/popper.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            /*默认字体排序*/
+            margin: 0;
+            /*外内边距为0*/
+            padding: 0;
+            background-image: url('杂图/网站背景图3.jpg');
+            background-size: cover;
+            /*覆盖*/
+
+        }
+
+        /* HTML文档的根元素和整个文档的主体部分 */
+        html,
+        body {
+            height: 100%;
+            /*高度为视窗100%，内外边距为0%*/
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 确保内容区域的最小高度 */
+        .content {
+            min-height: calc(100vh - 40px);
+            /* 调整这里的 40px 到你的 footer 高度 */
+        }
+
+        /* 确保内容不被导航栏覆盖 */
+        .main-content {
+            padding-block-start: 80px;
+        }
+
+        .content-header {
+            padding: 1em;
+            color: white;
+            text-align: left;
+            background-color: transparent;
+        }
+
+        .content-area {
+            background-color: #103220;
+            padding: 2em;
+            color: white;
+            min-height: 300px;
+            text-align: center;
+        }
+
+        .content-area p {
+            margin: 0 0 1em 0;
+        }
+
+        .content-area img {
+            display: flex;
+            /*弹性盒子布局*/
+            margin-top: 1em;
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            /*固定位置*/
+            top: 0;
+            width: 100%;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0.99), rgba(77, 156, 84, 0.9));
+            padding: 10px 0;
+            /*内边距上下10左右0*/
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /*水平和垂直偏移量为4像素、模糊半径为8像素的阴影效果*/
+            z-index: 1000;
+            /*层级*/
+            display: flex;
+            /*弹性盒子布局*/
+            justify-content: space-between;
+            /*水平方向上分散对齐*/
+            align-items: center;
+            /*垂直方向上居中对齐*/
+        }
+
+        .navbar img {
+            /*导航栏内图片*/
+            height: 50px;
+            margin-left: 20px;
+            /*左侧20px外边距*/
+            cursor: pointer;
+            /*鼠标变指针，浏览器默认操作*/
+        }
+
+        .navbar .nav-links a {
+            /*导航栏内<a>链接*/
+            background-image: url('杂图/按钮.png');
+            background-size: contain;
+            /*图片尺寸自适应*/
+            background-repeat: no-repeat;
+            /*单次出现*/
+            background-position: center;
+            margin-right: 15px;
+            padding: 8px 20px;
+        }
+
+        .navbar a {
+            /*导航栏内所有链接*/
+            color: white;
+            text-decoration: none;
+            /*移除下划线*/
+            /*border-radius: 100px;*/
+            /*圆角*/
+            transition: background-color 0.3s;
+            /*背景颜色变化的过渡时间*/
+        }
+
+        .navbar a:hover {
+            /*按钮悬停样式*/
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .navbar.fixed-top {
+            /* 导航栏固定在顶部，可删除？ */
+            position: fixed;
+            /* 固定位置 */
+            top: 0;
+            z-index: 1000;
+        }
+
+        body.fixed-nav {
+            /* 添加与导航栏高度相同的顶部内边距 */
+            padding-top: 80px;
+        }
+
+        /*看板娘用css 本功能来自公主连结BWIKI*/
+        .animechara {
+            display: block;
+            width: 130px;
+            height: -200px;
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            z-index: 9999;
+        }
+
+        #message {
+            position: absolute;
+            border-radius: 6px;
+            box-shadow: 0 0 1px #eeeeee;
+            border: 1px;
+            border-color: white;
+            background: rgba(255, 255, 255, 0.9);
+            width: auto !important;
+            color: #191919;
+            outline: none;
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 5px;
+            line-height: 170%;
+            min-height: 1em;
+            text-align: left;
+            z-index: 10000;
+            bottom: 100%;
+        }
+
+        #message::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(255, 170, 170, 0.555) transparent transparent transparent;
+        }
+
+        /*看板娘相关*/
+        .chara {
+            inline-size: 300px;
+            block-size: 300px;
+            background: url("杂图/戴夫1看板娘.gif") no-repeat;
+            background-size: contain;
+            position: relative;
+        }
+
+        /*右侧音乐播放器样式*/
+        #musicPlayer {
+            position: fixed;
+            /* 固定定位 */
+            top: 50%;
+            left: 92%;
+            transform: translate(-50%, -50%);
+            /* 进一步居中对齐 */
+            background-color: rgba(34, 122, 51, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            /* 圆角 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* 阴影 */
+            z-index: 1000;
+            /* 层级 */
+            text-align: center;
+        }
+
+        #musicPlayer select,
+        #musicPlayer button {
+            margin: 10px 5px;
+            padding: 10px;
+            border-radius: 5px;
+            /* 圆角 */
+            border: none;
+            /* 移除默认边框 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* 阴影 */
+            font-size: 16px;
+        }
+
+        #musicPlayer select {
+            /* 背景 */
+            background-color: #fff;
+            color: #227a33;
+        }
+
+        #musicPlayer button {
+            /* 按钮 */
+            background-color: #227a33;
+            color: #fff;
+            cursor: pointer;
+            /*鼠标变指针，浏览器默认操作*/
+        }
+
+        #musicPlayer button:hover {
+            /* 按钮悬停时 */
+            background-color: #1e6930;
+
+        }
+
+        /*底部音乐列表样式*/
+        .music-table-container {
+            display: flex;
+            /*弹性盒子布局*/
+            justify-content: center;
+            /*水平居中*/
+            align-items: center;
+            /*垂直居中*/
+            height: 50%;
+            width: 100%;
+        }
+
+        .music-table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            /*合并表格框*/
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /*阴影*/
+            border-radius: 10px;
+            /*圆角*/
+            overflow: hidden;
+            /*超出的隐藏*/
+        }
+
+        .music-table th,
+        .music-table td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .music-table th {
+            background-color: #227a33;
+            color: #fff;
+        }
+
+        .music-table tr:nth-child(even) {
+            /*偶数行*/
+            background-color: #f2f2f2;
+        }
+
+        .playPauseBtn {
+            /*播放/暂停按钮*/
+            padding: 8px 12px;
+            background-color: #227a33;
+            color: white;
+            border: none;
+            /*移除边框*/
+            border-radius: 5px;
+            /*圆角*/
+            cursor: pointer;
+            /*悬停变指针*/
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /*阴影*/
+        }
+
+        .playPauseBtn:hover {
+            /*按钮悬停*/
+            background-color: #1e6930;
+        }
+
+
+        .main-container {
+            display: flex;
+            /*弹性盒子布局*/
+            flex-direction: column;
+            /* 垂直方向 */
+            width: 100%;
+            border: 10px groove #227a33;
+            /* 立体边框 */
+            border-radius: 10px;
+            /* 圆角 */
+            overflow: hidden;
+            /*超出部分将被隐藏*/
+        }
+
+        .split-container {
+            display: flex;
+            /*弹性盒子布局*/
+            flex-direction: row;
+            /* 沿水平排列 */
+            width: 100%;
+        }
+
+        .left-container,
+        .right-container {
+            flex: 1;
+            /* 两个子元素平分空间 */
+            padding: 1em;
+        }
+
+        .overlay {
+            /* 内容背景 */
+            width: 80%;
+            position: relative;
+            /* 相对定位 */
+            top: 10%;
+            bottom: 10%;
+            left: 10%;
+            background-color: #111a1b;
+            overflow-y: auto;
+            /* 允许垂直方向滚动 */
+            padding: 20px;
+            box-sizing: border-box;
+            /* 将 padding 和 border 包含在 width 和 height 属性内 */
+            color: white;
+            min-height: 100vh;
+            /* 元素也不会低于整个视口的高度 */
+        }
+
+        /* 头部介绍 */
+        .custom-section {
+            background-color: #227a33;
+            padding: 20px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .custom-section h2 {
+            color: #fff;
+            text-align: center;
+        }
+
+        .custom-section img {
+            max-width: 100%;
+            display: block;
+            /*块级，图片会占据整行*/
+            margin: 0 auto 10px;
+        }
+
+        .custom-title-background {
+            background-image: url('杂图/标题图.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            text-align: center;
+            padding: 70px;
+            width: 100%;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .custom-title-background h1 {
+            color: #daba20;
+            font-size: 2em;
+            z-index: 2;
+            position: absolute;
+            /* 可以自由设置位置 */
+            top: 65%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            /* 使h1元素居中 */
+        }
+
+        .JieShao-area {
+            background-color: #284835;
+            padding: 2em;
+            color: dda110;
+            min-height: 300px;
+            text-align: left;
+        }
+
+        .img-container {
+            width: 100px;
+            /* 图片容器的固定宽度 */
+            height: 100px;
+            /* 图片容器的固定高度，保持宽高比 */
+            margin-bottom: 10px;
+            /* 图片容器之间的间隔 */
+        }
+
+        /* 图片样式，使其填满容器但不变形 */
+        .img-fluid {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* 保持图片宽高比，裁剪超出部分 */
+            border-radius: 4px;
+            /* 可以为图片添加圆角 */
+        }
+
+        /* 植物和僵尸图标 */
+        .plant-gallery {
+            display: flex;
+            /*弹性盒子布局*/
+            flex-wrap: wrap;
+            /*溢出换行*/
+            justify-content: center;
+            gap: 1em;
+            /* 元素间间隔 */
+        }
+
+        .plant-link {
+            display: inline-block;
+            /*使得可设置宽高*/
+            width: 80px;
+            height: 80px;
+            position: relative;
+            /*相对定位*/
+        }
+
+        .plant-avatar {
+            width: 80px;
+            height: 80px;
+            margin: 10px;
+            position: relative;
+            /* 相对定位 */
+            background-size: cover;
+            background-position: center;
+            border-radius: 15%;
+            /* 圆角 */
+            overflow: overlay;
+            /* 超出容器部分的图片设置滚动条 */
+        }
+
+        .plant-avatar img {
+            width: 100px;
+            height: auto;
+            /* 图片高度占满容器高度 */
+            object-fit: contain;
+            /* 保持图片宽高比，图片完整显示在容器内 */
+        }
+
+        /*鼠标悬停时*/
+        .plant-avatar:hover {
+            transform: scale(1.1);
+            /* 容器放大10% */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* 阴影 */
+        }
+
+        .plant-avatar:hover img {
+            opacity: 0.8;
+            /* 透明底变0.8 */
+        }
+
+
+        /* 试玩 样式 */
+        #iframeContainer {
+            display: none;
+            /* 初始隐藏*/
+        }
+
+        #startButton {
+            background-image: url('杂图/开始游戏.png');
+            background-size: cover;
+            /* 根据需要调整背景图片大小 */
+            background-repeat: no-repeat;
+            /* 防止背景图片重复 */
+            background-color: transparent;
+            /* 设置背景颜色为透明 */
+            border: none;
+            /* 移除按钮边框 */
+            width: 450px;
+            height: 220px;
+        }
+
+        #stopButton {
+            color: #000;
+            border: none;
+            /* 移除按钮边框 */
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+        }
+
+        /* Footer 样式 */
+        .footer {
+            position: relative;
+            /*相对定位*/
+            margin-top: auto;
+            /* 将 footer 推至页面底部 */
+            width: 100%;
+            background-color: black;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+
+
+        .search-bar {
+            position: relative;
+            flex-grow: 0.3;
+            /* 让搜索栏占据剩余空间 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .search-bar input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 80%;
+            /* 根据需要调整宽度 */
+        }
+
+        .search-bar button {
+            padding: 8px 15px;
+            margin-left: 10px;
+            background-color: #227a33;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+
+    <!-- 引入 Bootstrap CSS 文件 -->
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="content">
+        <div class="navbar">
+            <a href="index.html"><img src="杂图/PvZ_Logo.jpg" alt="Logo"></a>
+
+            <div class="nav-links">
+                <a href="index.html#section1">介绍</a>
+                <a href="玩法介绍.html">玩法</a>
+                <a href="index.html#section2">植物</a>
+                <a href="index.html#section3">僵尸</a>
+                <a href="index.html#section4">试玩</a>
+                <a href="index.html#section5">音乐</a>
+            </div>
+        </div>
+        <div class="animechara">
+            <div class="message" id="message"></div>
+            <div class="chara"></div>
+        </div>
+        <div class="overlay" id="overlay">
+            <div class="custom-section">
+                <div style="padding: 2em;">
+                    <img src="杂图/179248-175264-ca.jpg" alt="图片" decoding="async" width="300" height="auto"
+                        style="float: left; margin-right: 1em; margin-bottom: 1em;"> <!-- 浏览器异步解码图片;图片向左浮动 -->
+                    <div style="overflow: hidden;"> <!-- 清除浮动 -->
+                        <div style="float: left; width: calc(100% - 300px);"> <!-- 文字区域宽度=减去图片宽度 -->
+                            <p>
+                            <div style="font-size: 30px;"><b>植物大战僵尸</b></div>&nbsp;&nbsp;
+                            <div style="font-size: 25px;"><span style="color: #b2d878; margin: 0 5px; ">Plants vs.
+                                    Zombies</span>
+                                是由宝开游戏开发、艺电发行于2009年5月5日发售的一款塔防电子游戏。玩家要放置一系列拥有攻击或防御功能的植物，来阻止不断到来的僵尸进入小屋吃掉脑子。</div>
+                            </p>
+                            <img src="杂图/游戏愉快.png" alt="图片" decoding="async" width="" height="auto"
+                                style="position: absolute; bottom: 0; right: 0;"> <!-- 绝对定位 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 引入 Bootstrap JS 文件-->
+
+
+            <script src="./js/popper.min.js"></script>
+            <script src="./js/bootstrap.min.js"></script>
+
+            <div id="section1"><!--锚点1-->
+                <br><br><br>
+                <div style="text-align: left;">
+                    <h1 style="font-size: 50px; font-weight: bold;">欢迎来到我们的PVZ网站</h1>
+                </div>
+                <div style="font-size: 25px;"><span
+                        style="color: #b2d878; margin: 0 5px; ">植物大战僵尸系列的百科全书，收集关于植物大战僵尸的方方面面。</span>
+                </div>
+                <p style="font-size: 21px;">
+                    在游戏中，植物和僵尸两个主要的派系在不断地战斗。玩家的邻居疯狂戴夫可以帮助玩家阻止僵尸及其首领埃德加博士。游戏都包含许多不同的游戏模式，以增加玩法和乐趣。<br>
+                    本作为塔防、策略游戏的经典游戏，甚至成为一代中国玩家的单机游戏启蒙，对中国网络文化产生了深远的影响。<br>
+                    作为一款跨平台游戏，本作从Microsoft Windows、手机到DS、DSiWare等掌机再到Xbox 360和PlayStation 3等家用机上都能找到踪影。
+                </p>
+
+                <div class="split-container">
+                    <div class="left-container">
+                        <section class="JieShao-area">
+
+                            <div style="height: 650px;">
+                                准备好在一个由宝开出品的全新实时策略游戏中种植你的植物吧！一群爱玩的僵尸将要侵入你的家园，而你仅有的防御只有49种植物。在僵尸大军到达你的家门口之前，使用豌豆射手、坚果、樱桃炸弹以及更多的植物来应对26种不同类型的僵尸。每种僵尸都有它独特的技能，所以你必须快速的思考，并且更快的种植来把他们全部打倒。但是你要注意怎样运用有限的草坪和卡槽……随着你与这些有趣的僵尸战斗的推进，一些诸如黑夜、迷雾、泳池的阻碍将会增加难度，使挑战的多样性更上一层楼。而通过发掘五种不同的游戏模式，乐趣将永不消逝！<br>
+
+                                游玩五种游戏模式：冒险模式、迷你游戏、解谜模式、生存模式，以及毫无压力的禅境花园<br>
+                                征服冒险模式的全部50个关卡——通过白天、黑夜以及迷雾，或者在泳池中、屋顶上<br>
+                                战胜26种形态各异的僵尸，包括撑杆僵尸、潜水僵尸和雪橇车僵尸<br>
+                                获得49种强大的植物，并且收集钱币去购买宠物蜗牛、提升能力，以及更多！<br>
+                                打开图鉴来了解全部的植物和僵尸，加上一些有趣的名“植（尸）”逸事<br>
+                                或者浏览疯狂戴夫的商店，获取一些特殊的植物和道具来组织一切僵尸的入侵<br>
+                                惊人的画风和配乐，加上一个额外的音乐影片<br>
+                                可以无限重玩，而每一次相信你都会有不一样的体验！
+                            </div>
+                        </section>
+                    </div>
+                    <div class="right-container">
+                        <section class="JieShao-area">
+                            <div class="container">
+                                <div style="height: 650px;">
+                                    <div class="row"> <!-- Bootstrap，行 -->
+                                        <div class="col-4"> <!-- Bootstrap，表示4/12=3列 -->
+                                            <div class="img-container">
+                                                <img src="游戏图标/PC 图标.png" class="img-fluid" alt="PC 图标">
+                                            </div>
+                                            <p class="text-center mt-2">PC图标</p> <!-- 使用Bootstrap的类来居中文本，添加上边距 -->
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="img-container">
+                                                <img src="游戏图标/第一个 iPhone 图标.png" class="img-fluid" alt="第一个 iPhone 图标">
+                                            </div>
+                                            <p class="text-center mt-2">第一个 iPhone/iPod Touch 图标</p>
+                                            <!-- Bootstrap中的类 -->
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="img-container">
+                                                <img src="游戏图标/第二个 iPhone图标 .png" class="img-fluid" alt="第二个 iPhone 图标">
+                                            </div>
+                                            <p class="text-center mt-2">第二个 iPhone/iPod Touch 图标</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="img-container">
+                                                <img src="游戏图标/第三个 iPhone图标.png" class="img-fluid" alt="第三个 iPhone 图标">
+                                            </div>
+                                            <p class="text-center mt-2">第三个 iPhone/iPod Touch 图标</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="img-container">
+                                                <img src="游戏图标/第四个 iPhone图标.png" class="img-fluid" alt="第四个 iPhone 图标">
+                                            </div>
+                                            <p class="text-center mt-2">第四个 iPhone/iPod Touch 图标</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="img-container">
+                                                <img src="游戏图标/第一个 iPad 图标.png" class="img-fluid" alt="第一个iPad版图标">
+                                            </div>
+                                            <p class="text-center mt-2">第一个iPad版图标</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="img-container">
+                                                <img src="游戏图标/第二个 iPad 图标 .png" class="img-fluid" alt="第二个iPad版图标">
+                                            </div>
+                                            <p class="text-center mt-2">第二个iPad版图标</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="img-container">
+                                                <img src="游戏图标/第三个 iPad 图标.png" class="img-fluid" alt="第三个iPad版图标">
+                                            </div>
+                                            <p class="text-center mt-2">第三个iPad版图标</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="img-container">
+                                                <img src="游戏图标/Android 图标.png" class="img-fluid" alt="安卓版图标">
+                                            </div>
+                                            <p class="text-center mt-2">安卓版图标</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="img-container">
+                                                <img src="游戏图标/第一个免费版 图标.png" class="img-fluid" alt="第一个免费版 图标">
+                                            </div>
+                                            <p class="text-center mt-2">第一个免费版 图标</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="img-container">
+                                                <img src="游戏图标/第二个免费版 图标.png" class="img-fluid" alt="第二个免费版 图标">
+                                            </div>
+                                            <p class="text-center mt-2">第二个免费版 图标</p>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="img-container">
+                                                <img src="游戏图标/第三个免费版 图标.png" class="img-fluid" alt="第三个免费版 图标">
+                                            </div>
+                                            <p class="text-center mt-2">第三个免费版 图标</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="section2"><!--锚点2-->
+                <br><br><br>
+
+                <div class="content-header custom-title-background">
+                    <h1>植物一览</h1>
+                </div>
+                <div class="main-container">
+                    <section class="content-area">
+                        <div class="plant-gallery">
+                            <a href="豌豆射手.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/豌豆射手.gif" alt="豌豆射手">
+                                </div>
+                            </a>
+                            <a href="向日葵.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/向日葵.gif" alt="向日葵">
+                                </div>
+                            </a>
+                            <a href="樱桃炸弹.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/樱桃炸弹.gif" alt="樱桃炸弹">
+                                </div>
+                            </a>
+                            <a href="坚果.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/坚果.gif" alt="坚果">
+                                </div>
+                            </a>
+                            <a href="土豆地雷.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/土豆地雷.gif" alt="土豆地雷">
+                                </div>
+                            </a>
+                            <a href="寒冰射手.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/寒冰射手.gif" alt="寒冰射手">
+                                </div>
+                            </a>
+                            <a href="大嘴花.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/大嘴花.gif" alt="大嘴花">
+                                </div>
+                            </a>
+                            <a href="双重射手.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/双重射手.gif" alt="双重射手">
+                                </div>
+                            </a>
+                            <a href="小喷菇.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/小喷菇.gif" alt="小喷菇">
+                                </div>
+                            </a>
+                            <a href="阳光菇.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-晚上.jpg');">
+                                    <img src="植物/阳光菇.gif" alt="阳光菇">
+                                </div>
+                            </a>
+                            <a href="大喷菇.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-晚上.jpg');">
+                                    <img src="植物/大喷菇.gif" alt="大喷菇">
+                                </div>
+                            </a>
+                            <a href="吞吞碑.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-晚上.jpg');">
+                                    <img src="植物/吞吞碑.gif" alt="吞吞碑">
+                                </div>
+                            </a>
+                            <a href="催眠菇.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-晚上.jpg');">
+                                    <img src="植物/催眠菇.gif" alt="催眠菇">
+                                </div>
+                            </a>
+                            <a href="胆小菇.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-晚上.jpg');">
+                                    <img src="植物/胆小菇.gif" alt="胆小菇">
+                                </div>
+                            </a>
+                            <a href="寒冰菇.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-晚上.jpg');">
+                                    <img src="植物/寒冰菇.gif" alt="寒冰菇">
+                                </div>
+                            </a>
+                            <a href="末日菇.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-晚上.jpg');">
+                                    <img src="植物/末日菇.gif" alt="末日菇">
+                                </div>
+                            </a>
+                            <a href="睡莲叶.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-泳池.jpg');">
+                                    <img src="植物/睡莲叶.gif" alt="睡莲叶">
+                                </div>
+                            </a>
+                            <a href="窝瓜.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/窝瓜.gif" alt="窝瓜">
+                                </div>
+                            </a>
+                            <a href="三重射手.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/三重射手.gif" alt="三重射手">
+                                </div>
+                            </a>
+                            <a href="水草.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-泳池.jpg');">
+                                    <img src="植物/水草.gif" alt="水草">
+                                </div>
+                            </a>
+                            <a href="火爆辣椒.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/火爆辣椒.gif" alt="火爆辣椒">
+                                </div>
+                            </a>
+                            <a href="地刺.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/地刺.gif" alt="地刺">
+                                </div>
+                            </a>
+                            <a href="火炬树桩.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/火炬树桩.gif" alt="火炬树桩">
+                                </div>
+                            </a>
+                            <a href="高坚果.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/高坚果.gif" alt="高坚果">
+                                </div>
+                            </a>
+                            <a href="水滨菇.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-泳池.jpg');">
+                                    <img src="植物/水滨菇.gif" alt="水滨菇">
+                                </div>
+                            </a>
+                            <a href="灯笼花.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-晚上.jpg');">
+                                    <img src="植物/灯笼花.gif" alt="灯笼花">
+                                </div>
+                            </a>
+                            <a href="仙人掌.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/仙人掌.gif" alt="仙人掌">
+                                </div>
+                            </a>
+                            <a href="三叶草.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/三叶草.gif" alt="三叶草">
+                                </div>
+                            </a>
+                            <a href="双向射手.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/双向射手.gif" alt="双向射手">
+                                </div>
+                            </a>
+                            <a href="星星果.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/星星果.gif" alt="星星果">
+                                </div>
+                            </a>
+                            <a href="南瓜.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/南瓜.gif" alt="南瓜">
+                                </div>
+                            </a>
+                            <a href="磁铁菇.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-晚上.jpg');">
+                                    <img src="植物/磁铁菇.gif" alt="磁铁菇">
+                                </div>
+                            </a>
+                            <a href="卷心菜投手.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/卷心菜投手.gif" alt="卷心菜投手">
+                                </div>
+                            </a>
+                            <a href="花盆.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-屋顶.jpg');">
+                                    <img src="植物/花盆.gif" alt="花盆">
+                                </div>
+                            </a>
+                            <a href="玉米投手.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/玉米投手.gif" alt="玉米投手">
+                                </div>
+                            </a>
+                            <a href="咖啡豆.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-晚上.jpg');">
+                                    <img src="植物/咖啡豆.gif" alt="咖啡豆">
+                                </div>
+                            </a>
+                            <a href="大蒜.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/大蒜.gif" alt="大蒜">
+                                </div>
+                            </a>
+                            <a href="叶子保护伞.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/叶子保护伞.gif" alt="叶子保护伞">
+                                </div>
+                            </a>
+                            <a href="金盏花.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/金盏花.gif" alt="金盏花">
+                                </div>
+                            </a>
+                            <a href="西瓜投手.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/西瓜投手.gif" alt="西瓜投手">
+                                </div>
+                            </a>
+                            <a href="机枪射手.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/机枪射手.gif" alt="机枪射手">
+                                </div>
+                            </a>
+                            <a href="双头向日葵.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/双头向日葵.gif" alt="双头向日葵">
+                                </div>
+                            </a>
+                            <a href="忧郁蘑菇.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-晚上.jpg');">
+                                    <img src="植物/忧郁蘑菇.gif" alt="忧郁蘑菇">
+                                </div>
+                            </a>
+                            <a href="猫尾草.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-泳池.jpg');">
+                                    <img src="植物/猫尾草.gif" alt="猫尾草">
+                                </div>
+                            </a>
+                            <a href="寒冰西瓜投手.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/寒冰西瓜投手.gif" alt="寒冰西瓜投手">
+                                </div>
+                            </a>
+                            <a href="金磁铁.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-晚上.jpg');">
+                                    <img src="植物/金磁铁.gif" alt="金磁铁">
+                                </div>
+                            </a>
+                            <a href="钢地刺.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/钢地刺.gif" alt="钢地刺">
+                                </div>
+                            </a>
+                            <a href="玉米大炮.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/玉米大炮.gif" alt="玉米大炮">
+                                </div>
+                            </a>
+                            <a href="模仿者.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/模仿者.gif" alt="模仿者">
+                                </div>
+                            </a>
+                            <a href="爆炸坚果.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/爆炸坚果.gif" alt="爆炸坚果">
+                                </div>
+                            </a>
+                            <a href="巨型坚果墙.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="植物/巨型坚果墙.gif" alt="巨型坚果墙">
+                                </div>
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+
+            <div id="section3"><!--锚点3-->
+                <br><br><br>
+                <div class="content-header custom-title-background">
+                    <h1>僵尸一览</h1>
+                </div>
+                <div class="main-container">
+                    <section class="content-area">
+                        <div class="plant-gallery">
+                            <a href="僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/普通僵尸.gif" alt="普通僵尸">
+                                </div>
+                            </a>
+                            <a href="旗帜僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/旗帜僵尸.gif" alt="旗帜僵尸">
+                                </div>
+                            </a>
+                            <a href="路障僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/路障僵尸.gif" alt="路障僵尸">
+                                </div>
+                            </a>
+                            <a href="撑杆跳僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/撑杆跳僵尸.gif" alt="撑杆跳僵尸">
+                                </div>
+                            </a>
+                            <a href="铁桶僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/铁桶僵尸.gif" alt="铁桶僵尸">
+                                </div>
+                            </a>
+                            <a href="报纸僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/报纸僵尸.gif" alt="报纸僵尸">
+                                </div>
+                            </a>
+                            <a href="铁门僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/铁门僵尸.gif" alt="铁门僵尸">
+                                </div>
+                            </a>
+                            <a href="橄榄球僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/橄榄球僵尸.gif" alt="橄榄球僵尸">
+                                </div>
+                            </a>
+                            <a href="舞王僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/舞王僵尸.gif" alt="舞王僵尸">
+                                </div>
+                            </a>
+                            <a href="伴舞僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/伴舞僵尸.gif" alt="伴舞僵尸">
+                                </div>
+                            </a>
+                            <a href="救生圈僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-泳池.jpg');">
+                                    <img src="僵尸/救生圈僵尸.gif" alt="救生圈僵尸">
+                                </div>
+                            </a>
+                            <a href="潜水僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-泳池.jpg');">
+                                    <img src="僵尸/潜水僵尸.gif" alt="潜水僵尸">
+                                </div>
+                            </a>
+
+                            <a href="冰车僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/冰车僵尸.gif" alt="冰车僵尸">
+                                </div>
+                            </a>
+                            <a href="僵尸雪橇小队.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/僵尸雪橇小队.gif" alt="僵尸雪橇小队">
+                                </div>
+                            </a>
+                            <a href="海豚骑手僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-泳池.jpg');">
+                                    <img src="僵尸/海豚骑手僵尸.gif" alt="海豚骑手僵尸">
+                                </div>
+                            </a>
+                            <a href="小丑僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/小丑僵尸.gif" alt="小丑僵尸">
+                                </div>
+                            </a>
+                            <a href="气球僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/气球僵尸.gif" alt="气球僵尸">
+                                </div>
+                            </a>
+                            <a href="挖掘僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/挖掘僵尸.gif" alt="挖掘僵尸">
+                                </div>
+                            </a>
+                            <a href="蹦蹦僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/蹦蹦僵尸.gif" alt="蹦蹦僵尸">
+                                </div>
+                            </a>
+                            <a href="僵尸雪人.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/僵尸雪人.gif" alt="僵尸雪人">
+                                </div>
+                            </a>
+                            <a href="蹦极僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/蹦极僵尸.gif" alt="蹦极僵尸">
+                                </div>
+                            </a>
+                            <a href="梯子僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/梯子僵尸.gif" alt="梯子僵尸">
+                                </div>
+                            </a>
+                            <a href="投石车僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/投石车僵尸.gif" alt="投石车僵尸">
+                                </div>
+                            </a>
+                            <a href="巨人僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/巨人僵尸.gif" alt="巨人僵尸">
+                                </div>
+                            </a>
+
+                            <a href="小鬼僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/小鬼僵尸.gif" alt="小鬼僵尸">
+                                </div>
+                            </a>
+
+                            <a href="僵王博士.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/僵王博士.gif" alt="僵王博士">
+                                </div>
+                            </a>
+                            <a href="万丈巨人僵尸.html" class="plant-link">
+                                <div class="plant-avatar" style="background-image: url('杂图/植物背景-白天.jpg');">
+                                    <img src="僵尸/万丈巨人僵尸.gif" alt="万丈巨人僵尸">
+                                </div>
+                            </a>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div id="section4"><!--锚点4-->
+                <br><br><br>
+                <div class="content-header custom-title-background">
+                    <h1>想试玩一下吗？</h1>
+                </div>
+                <div class="main-container">
+                    <section class="content-area">
+                        <button id="startButton"></button>
+                        <div id="iframeContainer">
+                            <iframe id="pvzIframe" width="80%" height="500px"
+                                style="border:none;"></iframe><!--嵌入另一个HTML,移除了<iframe>的边框-->
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+
+
+            <!-- 左侧音乐列表和控制按钮 -->
+            <div id="musicPlayer">
+                <select id="musicSelect">
+                    <option value="音乐/Laura Shigihara - Choose Your Seeds.mp3" selected>Choose Your Seeds</option>
+                    <option value="音乐/Laura Shigihara - Crazy Dave (In-Game).mp3">Crazy Dave (In-Game)</option>
+                    <option value="音乐/Laura Shigihara - Grasswalk.mp3">Grasswalk</option>
+                    <!-- 添加更多音乐选项 -->
+                </select>
+                <button id="playPauseButton">播放</button>
+            </div>
+
+            <div id="section5"><!--锚点5-->
+                <!-- 底部音乐列表和控制按钮 -->
+
+                <div class="content-header custom-title-background">
+                    <h1>音乐列表</h1>
+                </div>
+
+                <div class="music-table-container">
+                    <table class="music-table">
+                        <thead>
+                            <tr>
+                                <th>音乐名称</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div style="color: #103220;">Choose Your Seeds</div>
+                                </td>
+                                <td><button class="playPauseBtn"
+                                        data-src="音乐/Laura Shigihara - Choose Your Seeds.mp3">播放</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="color: #103220;">Crazy Dave (In-Game)</div>
+                                </td>
+                                <td><button class="playPauseBtn"
+                                        data-src="音乐/Laura Shigihara - Crazy Dave (In-Game).mp3">播放</button></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div style="color: #103220;">Grasswalk</div>
+                                </td>
+                                <td><button class="playPauseBtn"
+                                        data-src="音乐/Laura Shigihara - Grasswalk.mp3">播放</button>
+                                </td>
+                            </tr>
+                            <!-- 添加更多音乐条目 -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <audio id="backgroundMusic" loop></audio>
+    <div class="footer">
+        <p>所用资源版权属于 <a href="https://www.ea.com/ea-studios/popcap" target="_blank">"Popcap Games"</a>（20009-05-05）</p>
+        <p>看板娘程序来源于 <a href="https://wiki.biligame.com/pcr/?curid=1599"
+                target="_blank">"公主连结WIKI制作委员会"</a>（2020-04-30），遵循 <a
+                href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh" target="_blank">CC BY-NC-SA 3.0</a> 协议。
+        </p>
+        <p>部分数据来源于 <a
+                href="https://pvz.fandom.com/zh/wiki/%E6%A4%8D%E7%89%A9%E5%A4%A7%E6%88%98%E5%83%B5%E5%B0%B8%E7%99%BE%E7%A7%91"
+                target="_blank">"植物大战僵尸百科"</a>（2012-02-29），遵循 <a
+                href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh" target="_blank">CC BY-NC-SA 3.0</a> 协议。
+        </p>
+
+    </div>
+    <!-- 控制按钮 -->
+
+
+    <script>
+        // 计算长条区域的高度
+        function calculateOverlayHeight() {
+            var overlay = document.getElementById('overlay');
+            overlay.style.height = (window.innerHeight - overlay.offsetTop * 2) + 'px';
+        }
+
+        // 页面加载时计算一次高度
+        calculateOverlayHeight();
+
+        // 窗口大小变化时重新计算高度
+        window.addEventListener('resize', calculateOverlayHeight);
+
+        $(document).ready(function () {
+            $(".chara").on("click", function () {
+                randchat();
+            });
+
+            // 随机显示消息
+            function randchat() {
+                var i = Math.floor(Math.random() * n_msgs.length);
+                showMessage(n_msgs[i]);
+            }
+
+            // 显示消息函数
+            function showMessage(msg) {
+                $("#message").html(msg).fadeIn().fadeOut(8000);
+            }
+        });
+        // 在页面加载完毕后执行以下代码
+        window.addEventListener('load', function () {
+            // 获取导航栏元素
+            var navbar = document.querySelector('.navbar');
+            // 获取导航栏的高度
+            var navbarHeight = navbar.offsetHeight;
+            // 将页面滚动至顶部，并确保顶部内边距生效
+            window.scrollTo(0, 0);
+            // 监听页面滚动事件
+            window.addEventListener('scroll', function () {
+                // 如果页面滚动的垂直距离大于等于导航栏元素的顶部位置
+                if (window.scrollY >= navbar.offsetTop) {
+                    // 添加一个固定样式类
+                    navbar.classList.add('fixed-top');
+                    // 在内容区域顶部添加与导航栏高度相同的内边距
+                    document.body.style.paddingTop = navbarHeight + 'px';
+                } else {
+                    // 移除固定样式类
+                    navbar.classList.remove('fixed-top');
+                    // 恢复内容区域的顶部内边距为0
+                    document.body.style.paddingTop = '0';
+                }
+            });
+        });
+
+        document.getElementById('startButton').addEventListener('click', function () {
+            var iframeContainer = document.getElementById('iframeContainer');
+            var iframe = document.getElementById('pvzIframe'); // 修正这里，使用正确的ID
+            if (iframeContainer.style.display === 'none') {
+                iframe.src = 'pvz试玩.html'; // 确保这里的路径是正确的
+                iframeContainer.style.display = 'block'; // 显示 iframe
+                this.id = 'stopButton'; // 切换按钮 ID
+                this.classList.add('stop-button'); // 添加停止按钮的类名
+                this.style.backgroundImage = 'none'; // 移除背景图片
+                this.textContent = '停止'; // 更改按钮文字
+            } else {
+                iframe.src = ''; // 清空 src 属性卸载内容
+                iframeContainer.style.display = 'none'; // 隐藏 iframe
+                this.id = 'startButton'; // 切换按钮 ID
+                this.classList.remove('stop-button'); // 移除停止按钮的类名
+                this.style.backgroundImage = "url('杂图/开始游戏.png')"; // 恢复初始背景图片
+                this.textContent = ''; // 清空按钮文字
+            }
+        });
+
+
+
+    </script>
+</body>
+
+</html>

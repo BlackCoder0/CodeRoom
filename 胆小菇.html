@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <script src="./js/animechara.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PVZ WIKI/胆小蘑菇</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /*表格属性*/
+        table {
+            border-collapse: collapse;
+            /* 使相邻边框合并 */
+            width: 60%;
+            text-align: center;
+            margin-left: 100px;
+            /* 修改此处的值以改变表格的横向位置 */
+            /* 移除 table 的外边框 */
+            border: none;
+            /* 确保表格本身没有边框 */
+        }
+
+        /* 为所有 th 和 td 设置边框 */
+        th,
+        td {
+            padding: 8px;
+            border: 1px solid #ccc;
+            /* 设置边框颜色，例如 #ccc (灰色) */
+        }
+
+        th {
+            background-color: #217b11;
+            color: white;
+        }
+
+        /* 移除外边框：第一行和第一列的单元格不显示边框 */
+        tr:first-child th,
+        tr:first-child td {
+            border-top: none;
+            /* 移除顶部边框 */
+        }
+
+        th:first-child,
+        td:first-child {
+            border-left: none;
+            /* 移除左侧边框 */
+        }
+
+        /* 移除最右侧列的边框 */
+        table tr td:last-child {
+            border-right: none;
+        }
+
+        table tr th:last-child {
+            border-right: none;
+        }
+
+        /* 移除最下侧行的边框 */
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* 设置表格元素鼠标悬停效果 */
+        tr:hover {
+            background-color: #062c3a;
+        }
+
+
+
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('杂图/网站背景图3.jpg');
+            background-size: cover;
+
+        }
+
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0.99), rgba(77, 156, 84, 0.9));
+            padding: 10px 0;
+            /* 仅顶部和底部内边距 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar img {
+            height: 50px;
+            margin-left: 20px;
+            cursor: pointer;
+        }
+
+        .navbar .nav-links a {
+            background-image: url('杂图/按钮.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            margin-right: 15px;
+            /* 根据按钮图片大小和设计需求调整间隔 */
+            padding: 8px 20px;
+            /* 根据按钮图片大小和间隔需求调整内边距 */
+        }
+
+
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* 主要内容区域顶部预留空间 */
+        .main-content {
+            padding-block-start: 80px;
+        }
+
+
+        .navbar.fixed-top {
+            position: fixed;
+            /* 设置固定定位 */
+            top: 0;
+            /* 将导航栏固定在页面顶部 */
+            z-index: 1000;
+            /* 确保导航栏位于最顶层 */
+        }
+
+        body.fixed-nav {
+            padding-top: 80px;
+            /* 添加与导航栏高度相同的顶部内边距 */
+        }
+
+
+
+        /*看板娘用css 本功能来自公主连结BWIKI*/
+        .animechara {
+            display: block;
+            width: 130px;
+            height: -200px;
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            z-index: 9999;
+        }
+
+        #message {
+            position: absolute;
+            border-radius: 6px;
+            box-shadow: 0 0 1px #eeeeee;
+            border: 1px;
+            border-color: white;
+            background: rgba(255, 255, 255, 0.9);
+            width: auto !important;
+            color: #191919;
+            outline: none;
+            text-align: center;
+            font-size: 15px;
+            font-weight: bold;
+            padding: 5px;
+            line-height: 170%;
+            min-height: 1em;
+            text-align: left;
+            z-index: 10000;
+            bottom: 100%;
+        }
+
+        #message::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(255, 170, 170, 0.555) transparent transparent transparent;
+        }
+
+        /*看板娘相关*/
+        .chara {
+            inline-size: 300px;
+            block-size: 300px;
+            background: url("杂图/戴夫1看板娘.gif") no-repeat;
+            background-size: contain;
+            position: relative;
+        }
+
+
+
+        /*音乐播放器样式*/
+        #musicPlayer {
+            position: fixed;
+            /* 固定定位 */
+            top: 50%;
+            /* 垂直居中 */
+            left: 92%;
+            /* 水平居中 */
+            transform: translate(-50%, -50%);
+            /* 进一步居中对齐 */
+            background-color: rgba(34, 122, 51, 0.9);
+            /* 背景颜色 */
+            padding: 20px;
+            /* 内边距 */
+            border-radius: 10px;
+            /* 圆角边框 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            /* 阴影效果 */
+            z-index: 1000;
+            /* 确保播放器位于最前 */
+            text-align: center;
+        }
+
+        #musicPlayer select,
+        #musicPlayer button {
+            margin: 10px 5px;
+            /* 控件之间的间隔 */
+            padding: 10px;
+            /* 内边距 */
+            border-radius: 5px;
+            /* 圆角边框 */
+            border: none;
+            /* 移除默认边框 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* 控件阴影 */
+            font-size: 16px;
+            /* 字体大小 */
+        }
+
+        #musicPlayer select {
+            background-color: #fff;
+            /* 背景颜色 */
+            color: #227a33;
+            /* 字体颜色 */
+        }
+
+        #musicPlayer button {
+            background-color: #227a33;
+            /* 按钮背景颜色 */
+            color: #fff;
+            /* 按钮字体颜色 */
+            cursor: pointer;
+            /* 鼠标悬停时显示指针 */
+        }
+
+        #musicPlayer button:hover {
+            background-color: #1e6930;
+            /* 按钮悬停时背景颜色 */
+        }
+
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            /* 将 Flexbox 方向设置为垂直方向 */
+            width: 100%;
+            border: 2px solid #227a33;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        /* 添加一个新的父容器样式 */
+        .split-container {
+            display: flex;
+            /* 使用Flexbox布局 */
+            flex-direction: row;
+            /* 子元素水平排列 */
+            width: 100%;
+            /* 父容器宽度为100% */
+        }
+
+        .left-container,
+        .right-container {
+            flex: 1;
+            /* 两个子元素平分空间 */
+            padding: 1em;
+            /* 其他样式保持不变 */
+        }
+
+        .overlay {
+            width: 80%;
+            /*宽度*/
+            position: relative;
+            top: 10%;
+            /* 距离页面顶部 10% */
+            bottom: 10%;
+            /* 距离页面底部 10% */
+            left: 10%;
+            /* 距离页面左侧 10% */
+            background-image: linear-gradient(to right, #177e8a, #3f8336);
+            /*进行最底层颜色的调整，使其更具观赏性*/
+            height: auto;
+            /* 高度自适应内容 */
+            padding: 20px;
+            /*将绿色边框填满黑色外界*/
+            box-sizing: border-box;
+            color: rgb(255, 255, 255);
+
+            /* 根据需要调整此值 */
+            padding: 2rem;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.801);
+
+            text-align: justify;
+            /*这是设置中间一整块东西的*/
+
+        }
+
+        .custom-section {
+            /* 设置自定义区域的样式 */
+            background-color: #227a33;
+            /* 设置颜色 */
+            padding: 20px;
+            /* 设置内边距 */
+            position: relative;
+            /* 设置定位 */
+            margin-bottom: 20px;
+            /* 设置下边距 */
+        }
+
+        .custom-section h2 {
+            color: #fff;
+            /* 设置标题颜色 */
+            text-align: center;
+            /* 标题居中 */
+        }
+
+        .custom-section img {
+            /* 设置图片样式 */
+            max-width: 100%;
+            /* 图片宽度最大为父元素宽度 */
+            display: block;
+            /* 水平居中显示 */
+            margin: 0 auto 10px;
+            /* 水平居中显示，底边距为10px */
+        }
+
+        .content-header {
+            background-color: #227a33;
+            /*植物详情哪里矩形块的颜色*/
+            padding: 1em;
+            color: rgb(135, 220, 131);
+            /*将植物详情的颜色进行修改*/
+            text-align: center;
+        }
+
+
+        .content-area {
+            display: flex;
+            justify-content: left;
+            /* 水平居中 */
+
+            /* 垂直居中 */
+            background-color: #103220;
+            padding: 2em;
+            color: white;
+            min-height: 500px;
+        }
+
+        .content-area p {
+            margin: 0 0 1em 0;
+        }
+
+        .content-area img {
+            display: flex;
+            margin-top: 1em;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .JieShao-area {
+            background-color: #284835;
+            padding: 2em;
+            color: dda110;
+            min-height: 300px;
+            text-align: left;
+        }
+
+        /* 设置图片容器的宽度和高度 */
+        /* 设置图片容器的宽度和高度，可以根据需要调整 */
+        .img-container {
+            width: 80px;
+            /* 图片容器的固定宽度 */
+            height: 80px;
+            /* 图片容器的固定高度，保持宽高比 */
+            margin-bottom: 10px;
+            /* 图片容器之间的间隔 */
+        }
+
+        /* 图片样式，使其填满容器但不变形 */
+        .img-fluid {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* 保持图片宽高比，裁剪超出部分 */
+            border-radius: 4px;
+            /* 可以为图片添加圆角 */
+        }
+
+        .plant-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            position: relative;
+            /* 使元素在容器中居中对齐 */
+            gap: 1em;
+            /* 元素之间的间隔 */
+        }
+
+        .plant-link {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+
+
+        .plant-avatar {
+            width: 80px;
+            /* 容器的固定宽度 */
+            height: 80px;
+            /* 容器的固定高度 */
+            margin: 10px;
+            /* 容器之间的间隔 */
+            position: relative;
+            /* 为背景图片设置定位 */
+            background-size: cover;
+            background-position: center;
+            border-radius: 15%;
+            /* 根据需要设置圆角 */
+            overflow: hidden;
+            /* 隐藏超出容器部分的图片 */
+        }
+
+        /* 设置植物图片的样式 */
+        .plant-avatar img {
+            width: 80%;
+            /* 图片宽度占满容器宽度 */
+            height: 80%;
+            /* 图片高度占满容器高度 */
+            object-fit: contain;
+            /* 保持图片宽高比，图片完整显示在容器内 */
+            border-radius: 0%;
+            /* 根据需要设置圆角 */
+        }
+
+        .plant-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .plant-avatar:hover img {
+            opacity: 0.8;
+        }
+
+        .plant-description {
+            position: relative;
+            width: 300px;
+            height: 300px;
+        }
+
+        .plant-main-image {
+            position: absolute;
+            /* 确保有定位属性 */
+            left: -10px;
+            /* 背景图片的左边位置 */
+            top: -30px;
+            /* 上移20像素 */
+            width: 110%;
+            height: auto;
+        }
+
+
+        .plant-background {
+            position: absolute;
+            top: 45px
+                /* 背景图片的顶部位置 */
+            ;
+            left: -20px
+                /* 背景图片的左边位置 */
+            ;
+            width: 80px
+                /* 背景图片的宽度 */
+            ;
+            height: 40px
+                /* 背景图片的高度 */
+            ;
+            z-index: 1;
+        }
+
+        .plant-peashooter {
+            position: absolute;
+            top: -20px
+                /* 豌豆射手的顶部位置 */
+            ;
+            left: 80px
+                /* 豌豆射手的左边位置 */
+            ;
+            width: 125px;
+            height: auto;
+            z-index: 2;
+        }
+
+
+        .plant-text1 {
+            position: absolute;
+            top: 155px
+                /* 文字的顶部位置 */
+            ;
+            left: 100px
+                /* 文字的左边位置 */
+            ;
+            color: #cba64e
+                /* 文字颜色 */
+            ;
+            font-weight: bold;
+            font-size: 20px
+                /* 文字大小 */
+            ;
+            z-index: 3;
+            /*这部分是对角色名称的文字*/
+        }
+
+        .plant-text2 {
+            position: absolute;
+            top: 200px
+                /* 文字的顶部位置 */
+            ;
+            left: 20px
+                /* 文字的左边位置 */
+            ;
+            color: rgb(30, 19, 90)
+                /* 文字颜色 */
+            ;
+            font-size: 16px
+                /* 文字大小 */
+            ;
+            width: 80%;
+            /* 或者任何你希望的最大宽度 */
+            word-wrap: normal;
+            z-index: 4;
+            /*重叠优先级*/
+        }
+    </style>
+
+    <!-- 引入 Bootstrap CSS 文件 -->
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="navbar">
+        <a href="index.html"><img src="杂图/PvZ_Logo.jpg" alt="Logo"></a>
+
+        <div class="nav-links">
+            <a href="index.html#section1">介绍</a>
+            <a href="玩法介绍.html">玩法</a>
+            <a href="index.html#section2">植物</a>
+            <a href="index.html#section3">僵尸</a>
+            <a href="index.html#section4">试玩</a>
+            <a href="index.html#section5">音乐</a>
+        </div>
+    </div>
+    <div class="animechara">
+
+        <div class="message" id="message"></div>
+        <div class="chara"></div>
+    </div>
+    <div class="overlay" id="overlay">
+        <div class="main-container">
+
+            <header class="content-header">
+                <h1><img src="杂图/植物标签-上一页.jpg" width='50'><b>胆小蘑菇</b><img src="杂图/植物背景-阳光.gif" width='50'></h1>
+            </header>
+
+            <section class="content-area">
+
+                <!-- 这里放置你的内容 -->
+                <div class="plant-description">
+
+                    <img src="杂图/植物背景-新.png" width='1000' alt="植物介绍" class="plant-main-image">
+
+
+                    <img src="植物/胆小菇.gif" width='900' alt="胆小蘑菇" class="plant-peashooter">
+                    <div class="plant-text1">胆小蘑菇</div>
+                    <div class="plant-text2">胆小蘑菇是远程射手，敌人接近后会躲起来。<br><br>
+                        <span style="color: rgb(85, 82, 25);">伤害：</span>
+                        <span style="color: rgb(255, 55, 0);">中等</span><br>
+                        <span style="color: rgb(85, 82, 25);">特殊：</span>
+                        <span style="color: rgb(255, 55, 0);">敌人接近后停止射击</span><br>
+                        <span style="color: rgb(85, 82, 25);">“谁在那？”胆小蘑菇低声说，声音几乎听不见，“走开。我谁都不想见。除非是马戏团的人。
+                            <br>
+                            <br>
+                            <span style="color: rgb(85, 82, 25);"></span>消耗：25&emsp;&emsp;&emsp;&emsp;恢复时间：快</span>
+
+                    </div>
+                </div>
+                <table>
+                    <tr>
+                        <th>属性</th>
+                        <th>数值</th>
+                    </tr>
+                    <tr>
+                        <td>阳光花费</td>
+                        <td>25</td>
+                    </tr>
+                    <tr>
+                        <td>恢复时间</td>
+                        <td>7.5秒</td>
+                    </tr>
+                    <tr>
+                        <td>伤害</td>
+                        <td>20</td>
+                    </tr>
+                    <tr>
+                        <td>强度</td>
+                        <td>300</td>
+                    </tr>
+                    <tr>
+                        <td>射速</td>
+                        <td>1.36 ~ 1.5秒</td>
+                    </tr>
+                    <tr>
+                        <td>解锁方式</td>
+                        <td>通过关卡2-6</td>
+                    </tr>
+                </table>
+        </div>
+        </section>
+
+
+    </div>
+    <!-- 音乐列表和控制按钮 -->
+    <div class="overlay">
+        <h1>表现</h1>
+        <p>胆小蘑菇在通过关卡2-6后解锁。作为蘑菇，他在日间关卡会睡觉，需要用咖啡豆唤醒。胆小蘑菇的伤害与攻击间隔与豌豆射手完全相同，但只需要豌豆射手四分之一的阳光。有僵尸在胆小蘑菇附近约3×3的范围内时，胆小蘑菇会蜷缩起来，不再发射孢子，直到范围内没有僵尸为止。
+        </p>
+
+    </div>
+
+    <div class="overlay">
+        <h1>策略</h1>
+        <p>在夜间关卡，胆小蘑菇适合在前期使用，他只需要25阳光，可以快速组成防御。若是配合免费的喷射蘑菇可以发挥最佳效果。建议把胆小蘑菇种在左侧第一、二排，防止他蜷缩起来，并把喷射蘑菇种在中间的几排。后期可以用更强大的植物代替胆小蘑菇。
+        </p>
+        <p>然而在日间关卡，胆小蘑菇完全比不上豌豆射手，因为他加上咖啡豆同样需要100阳光，却需要额外消耗一个植物槽，还会在僵尸靠近时蜷缩起来。如果是为了取得“全日无休”成就，可以考虑使用胆小蘑菇。</p>
+
+    </div>
+    <div class="overlay">
+        <h1>原型</h1>
+        <p>胆小蘑菇的原型是蘑菇，从外表看可能是基于丝膜菌属的紫绒丝膜菌，其为生存在北半球的真菌。
+        </p>
+        <p>胆小蘑菇的英文原名“Scaredy-shroom”由“scaredy-cat”（胆小鬼）和“mushroom”（蘑菇）混合，说明他是胆小的蘑菇，会害怕僵尸。</p>
+
+    </div>
+    <div class="overlay">
+        <h1>花絮</h1>
+        <p>地下的挖掘僵尸也能吓到胆小蘑菇。
+        </p>
+        <p>蹦极僵尸可以吓到左侧一排、自身所在排、右侧二排，共3×4的胆小蘑菇。</p>
+        <p>胆小蘑菇可以看做喷射蘑菇的对立面，胆小蘑菇只能远程攻击不能近程攻击，而喷射蘑菇只能近程攻击不能远程攻击。</p>
+
+    </div>
+
+    <div id="musicPlayer">
+        <select id="musicSelect">
+            <option value="音乐/Laura Shigihara - Choose Your Seeds.mp3" selected>Choose Your Seeds</option>
+            <option value="音乐/Laura Shigihara - Crazy Dave (In-Game).mp3">Crazy Dave (In-Game)</option>
+            <option value="音乐/Laura Shigihara - Grasswalk.mp3">Grasswalk</option>
+            <!-- 添加更多音乐选项 -->
+        </select>
+        <button id="playPauseButton">播放</button>
+    </div>
+    </div>
+    <audio id="backgroundMusic" loop></audio>
+    <!-- 控制按钮 -->
+    <script src="./js/jquery.js"></script>
+    <script src="./js/musicController.js"></script>
+    <script>
+        // 计算长条区域的高度
+        function calculateOverlayHeight() {
+            var overlay = document.getElementById('overlay');
+            overlay.style.height = (window.innerHeight - overlay.offsetTop * 2) + 'px';
+        }
+
+        // 页面加载时计算一次高度
+        calculateOverlayHeight();
+
+        // 窗口大小变化时重新计算高度
+        window.addEventListener('resize', calculateOverlayHeight);
+
+        $(document).ready(function () {
+            $(".chara").on("click", function () {
+                randchat();
+            });
+
+            // 随机显示消息
+            function randchat() {
+                var i = Math.floor(Math.random() * n_msgs.length);
+                showMessage(n_msgs[i]);
+            }
+
+            // 显示消息函数
+            function showMessage(msg) {
+                $("#message").html(msg).fadeIn().fadeOut(8000);
+            }
+        });
+        // 在页面加载完毕后执行以下代码
+        window.addEventListener('load', function () {
+            // 获取导航栏元素
+            var navbar = document.querySelector('.navbar');
+            // 获取导航栏的高度
+            var navbarHeight = navbar.offsetHeight;
+            // 将页面滚动至顶部，并确保顶部内边距生效
+            window.scrollTo(0, 0);
+            // 监听页面滚动事件
+            window.addEventListener('scroll', function () {
+                // 如果页面滚动的垂直距离大于等于导航栏元素的顶部位置
+                if (window.scrollY >= navbar.offsetTop) {
+                    // 添加一个固定样式类
+                    navbar.classList.add('fixed-top');
+                    // 在内容区域顶部添加与导航栏高度相同的内边距
+                    document.body.style.paddingTop = navbarHeight + 'px';
+                } else {
+                    // 移除固定样式类
+                    navbar.classList.remove('fixed-top');
+                    // 恢复内容区域的顶部内边距为0
+                    document.body.style.paddingTop = '0';
+                }
+            });
+            var overlay = document.querySelector('.overlay');
+            overlay.style.height = 'auto';
+            overlay.style.overflow = 'hidden';
+        });
+
+
+    </script>
+</body>
+
+</html>

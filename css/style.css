@@ -1,0 +1,203 @@
+*{
+	margin:0;
+	padding:0;
+}
+body {
+	color: #666;
+	font-family:arial;
+	font-size:14px;
+	line-height:1.5; 
+}
+ul,li{
+	list-style-type:none;
+}
+a, a:link, a:visited {
+	color: #fff; 
+	text-decoration:none;
+}
+
+a:hover {
+	 color: #1f00cc; 
+}
+/* header */
+#header{
+	inline-size: 100%;
+	block-size: 70px;
+    background: url(../杂图/header.jpg) repeat-x;
+}
+
+#header .cont {
+	inline-size:1000px;
+	margin: 0 auto;
+}
+
+#header .logo {
+	float: inline-start;
+	inline-size: 300px;
+	line-height:108px;
+}
+#header .logo a {
+	font-size:26px;
+	color: #ffffff;
+}
+#header .header_right {
+	float: inline-end;
+	inline-size: 700px;
+}
+
+.search_box {
+	float: inline-end;
+	margin-block-start:15px;
+}
+.search_box .text {
+	display:block;
+	block-size: 20px;
+	inline-size: 150px;
+	color: #fff;
+	font-size: 12px;
+	border: 1px solid #1b0d03;
+	background: #261305;
+	float:inline-start;
+	outline:none;
+}
+
+.search_box .btn {
+	display:block;
+	float:inline-start;
+ 	block-size: 22px;
+	inline-size:50px;
+	cursor: pointer;
+	font-size: 12px;
+	outline: none;
+	color:#885f40;
+	border: 1px solid #1b0d03;
+	background: #261305;
+	margin-inline-start:5px;
+}
+
+#header .nav{
+	clear: both;
+	float: inline-end;
+	block-size: 53px;
+	margin-block-start: 15px;
+}
+
+#header .nav li {
+	float:inline-start;
+}
+
+#header .nav li a {
+	float: inline-start;
+	display: block;
+	block-size: 28px;
+	margin-inline-start: 10px;
+	padding:10px; 
+	padding-block-start:15px;
+	text-align: center;
+	font-size: 14px;
+	color: #cdaf96;	
+}
+
+#header .nav a:hover{
+	color: #b78864;
+	background: url(../杂图/menu_hover.png) no-repeat;
+}
+
+
+/* 简介 */
+
+#jianjie {
+	clear: both;
+	inline-size: 100%;
+	block-size: 230px;
+	background: url(../杂图/jianjie_bg.jpg) repeat-x;
+}
+
+#jianjie .cont {
+	inline-size: 1000px;
+	block-size: 200px;
+	margin: 0 auto;
+	padding: 15px 0; 
+}
+
+#jianjie .pic {
+	float: inline-start;
+	position: relative;
+	inline-size: 298px;
+	block-size: 147px;
+	padding: 25px;
+}
+#jianjie .pic  img{
+	inline-size: 298px;
+	block-size: 147px;
+}
+
+#jianjie .pic span {
+	position: absolute;
+	inset-block-start: 0;
+	inset-inline-start: 0;
+	inline-size: 338px;
+	block-size: 197px;
+	
+}
+
+#jianjie .text {
+	float: inline-end;
+	inline-size: 600px;
+	padding-block-start: 20px;
+}
+/* 中间内容 */
+
+#content{
+	inline-size: 100%;
+	background: #e9dab9;
+	padding:30px 0;
+	overflow:hidden;
+}
+
+#content .cont{
+	inline-size: 1000px;
+	margin: 0 auto;
+	
+}
+
+#content .cont_left {
+	float: inline-start;
+	inline-size: 600px;
+}
+
+#content .cont_left h2 {
+	line-height:40px;
+}
+#content .cont_left p {
+	text-indent:28px;
+}
+
+#content .cont_right {
+	position: relative;
+	float: inline-end;
+	inline-size: 240px;
+	margin: 13px 0;
+	padding: 10px 20px;
+	background:#d8c9a3;
+}
+#content .cont_right img{
+	inline-size:240px;
+	display:block;
+	margin-block-start:10px;
+}
+								
+/* footer */
+
+#footer {
+	inline-size: 100%;
+	text-align:center;
+	padding:20px 0;
+	background:#723e16;
+}
+
+#footer p {
+	line-height:2;
+	color: #fff;
+}
+
