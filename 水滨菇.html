@@ -471,38 +471,22 @@
         .plant-main-image {
             position: absolute;
             /* 确保有定位属性 */
-            left: -10px;
+            left: 30px;
             /* 背景图片的左边位置 */
-            top: -30px;
+            top: -20px;
             /* 上移20像素 */
             width: 110%;
             height: auto;
         }
 
 
-        .plant-background {
-            position: absolute;
-            top: 45px
-                /* 背景图片的顶部位置 */
-            ;
-            left: -20px
-                /* 背景图片的左边位置 */
-            ;
-            width: 80px
-                /* 背景图片的宽度 */
-            ;
-            height: 40px
-                /* 背景图片的高度 */
-            ;
-            z-index: 1;
-        }
 
         .plant-peashooter {
             position: absolute;
-            top: -20px
+            top: -5px
                 /* 豌豆射手的顶部位置 */
             ;
-            left: 80px
+            left: 120px
                 /* 豌豆射手的左边位置 */
             ;
             width: 125px;
@@ -513,10 +497,10 @@
 
         .plant-text1 {
             position: absolute;
-            top: 155px
+            top: 165px
                 /* 文字的顶部位置 */
             ;
-            left: 100px
+            left: 140px
                 /* 文字的左边位置 */
             ;
             color: #cba64e
@@ -532,16 +516,16 @@
 
         .plant-text2 {
             position: absolute;
-            top: 200px
+            top: 70%
                 /* 文字的顶部位置 */
             ;
-            left: 20px
+            left: 20%
                 /* 文字的左边位置 */
             ;
             color: rgb(30, 19, 90)
                 /* 文字颜色 */
             ;
-            font-size: 16px
+            font-size: 14px
                 /* 文字大小 */
             ;
             width: 80%;
@@ -549,7 +533,31 @@
             word-wrap: normal;
             z-index: 4;
             /*重叠优先级*/
+
         }
+
+        .plant-text3 {
+            position: absolute;
+            bottom: -40%
+                /* 文字的底部位置 */
+            ;
+            left: 20%
+                /* 文字的左边位置 */
+            ;
+            color: rgb(30, 19, 90)
+                /* 文字颜色 */
+            ;
+            font-size: 14px
+                /* 文字大小 */
+            ;
+            width: 80%;
+            /* 或者任何你希望的最大宽度 */
+            word-wrap: normal;
+            z-index: 4;
+            /*重叠优先级*/
+
+        }
+
     </style>
 
     <!-- 引入 Bootstrap CSS 文件 -->
@@ -592,7 +600,8 @@
 
                     <img src="植物/水滨菇.gif" width='900' alt="海蘑菇" class="plant-peashooter">
                     <div class="plant-text1">海蘑菇</div>
-                    <div class="plant-text2">海蘑菇是水生植物，能发射短程孢子。<br>
+                    <div class="plant-text2">海蘑菇是水生植物，能发射短程孢子。</div>
+                    <div class="plant-text3">
                         <span style="color: rgb(85, 82, 25);">伤害：</span>
                         <span style="color: rgb(255, 55, 0);">中</span><br>
                         <span style="color: rgb(85, 82, 25);">射程：</span>
@@ -601,14 +610,16 @@
                         <span style="color: rgb(255, 55, 0);">必须种在水中</span><br>
                         <span style="color: rgb(85, 82, 25);">特殊：</span>
                         <span style="color: rgb(255, 55, 0);">白天睡觉</span><br>
-                        <span style="color: rgb(85, 82, 25);">海蘑菇从未见过大海。然而，总有一天，他会亲眼遥望大海的。
-                            <br>
-                            <br>
-                            <span style="color: rgb(85, 82, 25);"></span>消耗：0&emsp;&emsp;&emsp;&emsp;恢复时间：慢</span>
+                        <span style="color: rgb(85, 82, 25);">海蘑菇从未见过大海。虽然他名中有海，也听说过很多关于海的事情，但是从没有找到合适的时间。然而，总有一天，他会亲眼遥望大海的。<br>
+                        <span style="color: rgb(85, 82, 25);"></span>消耗：0&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;恢复时间：慢</span>
 
                     </div>
                 </div>
                 <table>
+                    <tr>
+                        <th>初次获得</th>
+                        <td>发射短距离孢子的水生植物</td>
+                    <tr>
                     <tr>
                         <th>属性</th>
                         <th>数值</th>
