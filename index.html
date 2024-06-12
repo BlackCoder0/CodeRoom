@@ -1204,7 +1204,7 @@
     </div>
     <audio id="backgroundMusic" loop></audio>
     <div class="footer">
-        <p>所用资源版权属于 <a href="https://www.ea.com/ea-studios/popcap" target="_blank">"Popcap Games"</a>（20009-05-05）</p>
+        <p>所用资源版权属于 <a href="https://www.ea.com/ea-studios/popcap" target="_blank">"Popcap Games"</a>（2009-05-05）</p>
         <p>看板娘程序来源于 <a href="https://wiki.biligame.com/pcr/?curid=1599"
                 target="_blank">"公主连结WIKI制作委员会"</a>（2020-04-30），遵循 <a
                 href="https://creativecommons.org/licenses/by-nc-sa/3.0/deed.zh" target="_blank">CC BY-NC-SA 3.0</a> 协议。
@@ -1275,14 +1275,14 @@
 
         document.getElementById('startButton').addEventListener('click', function () {
             var iframeContainer = document.getElementById('iframeContainer');
-            var iframe = document.getElementById('pvzIframe'); // 修正这里，使用正确的ID
+            var iframe = document.getElementById('pvzIframe'); 
             if (iframeContainer.style.display === 'none') {
-                iframe.src = 'pvz试玩.html'; // 确保这里的路径是正确的
+                iframe.src = 'pvz试玩.html'; 
                 iframeContainer.style.display = 'block'; // 显示 iframe
                 this.id = 'stopButton'; // 切换按钮 ID
                 this.classList.add('stop-button'); // 添加停止按钮的类名
                 this.style.backgroundImage = 'none'; // 移除背景图片
-                this.textContent = '停止'; // 更改按钮文字
+                this.textContent = '停止'; 
             } else {
                 iframe.src = ''; // 清空 src 属性卸载内容
                 iframeContainer.style.display = 'none'; // 隐藏 iframe
